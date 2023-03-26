@@ -1,9 +1,9 @@
 ;;; cl-svurl2.asd --- ASD File for CL-SVURL System
-;;; Time-stamp: <2023-03-25 00:16:59 minilolh>
+;;; Time-stamp: <2023-03-26 10:11:31 wlh>
 
 ;;; Author: LOLH
 ;;; Created: 2023-03-24
-;;; Version 0.0.1
+;;; Version 0.0.2
 
 ;;; Commentary:
 ;;; This is the system cl-svurl2, because there is already an CL-SVURL.
@@ -16,6 +16,7 @@
 ;;; Code:
 
 (defsystem "cl-svurl2"
+  :depends-on ("lolh-utils")
   :components
   ((:module "src"
     :components
