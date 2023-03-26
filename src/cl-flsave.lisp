@@ -1,5 +1,5 @@
 ;;; cl-flsave.lisp
-;;; Time-stamp: <2023-03-26 10:40:24 wlh>
+;;; Time-stamp: <2023-03-26 11:13:36 wlh>
 
 ;;; Commentary:
 ;;; The code here deals with saving certain files in a directory into
@@ -110,7 +110,11 @@ it and return 0."
   (if v (format t "~&The files ~A~A have been deleted.~2%" dir type)))
 
 (defun flsave (&key (dir *downloads*) (type *jpg*) (v nil))
-  "Execute the three procedures to process the files in the directory."
+  "Execute the four procedures to process the files in the directory:
+- dedup
+- rename
+- tar
+- delete"
   (if v (format t "~&Saving files in ~A." dir))
   (dedup-files :dir dir :type type :v v)
   (rename-files :dir dir :type type :v v)
