@@ -1,5 +1,5 @@
 ;;; cl-svurl2.asd --- ASD File for CL-SVURL System
-;;; Time-stamp: <2023-03-26 10:11:31 wlh>
+;;; Time-stamp: <2023-03-26 10:45:52 wlh>
 
 ;;; Author: LOLH
 ;;; Created: 2023-03-24
@@ -16,6 +16,9 @@
 ;;; Code:
 
 (defsystem "cl-svurl2"
+  :description "SVURL implemented in Common Lisp."
+  :version 0.0.2
+  :author "wlharvey4"
   :depends-on ("lolh-utils")
   :components
   ((:module "src"

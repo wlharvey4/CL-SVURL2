@@ -1,5 +1,5 @@
 ;;; cl-flsave.lisp
-;;; Time-stamp: <2023-03-26 10:16:53 wlh>
+;;; Time-stamp: <2023-03-26 10:40:24 wlh>
 
 ;;; Commentary:
 ;;; The code here deals with saving certain files in a directory into
@@ -14,10 +14,6 @@
   (:use :cl
    :lolh.utils)
   (:export
-   :dedup-files
-   :rename-files
-   :tar-files
-   :delete-files
    :flsave))
 (in-package :svurl)
 
@@ -39,15 +35,13 @@
 from a directory.
 If :name is nil (the default) return pathnames; if t, return namestrings.
 If :name-only is nil, return absolute namestrings; if t, return file-name only."
-  (let ((jpgfiles (uiop:directory-files dir type)))
-    (when (and name name-only)
-      (return-from files-with-type (mapcar #'file-namestring jpgfiles)))
-    (when name
-      (return-from files-with-type (mapcar #'namestring jpgfiles)))
-    (when name-only
-      (return-from files-with-type (mapcar #'pathname-name jpgfiles)))
-    (when (not (or name name-only))
-      jpgfiles)))
+  (let ((files (uiop:directory-files dir type))
+	(func (cond
+		((when (and name name-only) #'file-namestring))
+		((when name #'namestring))
+		((when name-only #'pathname-name))
+		(t #'identity))))
+    (mapcar func files)))
 
 (defun tar-list ()
   "Start an asynchronous tar process to list all of the files onto a stream."
