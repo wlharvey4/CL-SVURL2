@@ -1,18 +1,18 @@
 ;;; cl-flsave.lisp
-;;; Time-stamp: <2023-03-26 10:09:43 wlh>
+;;; Time-stamp: <2023-03-26 10:16:53 wlh>
 
 ;;; Commentary:
 ;;; The code here deals with saving certain files in a directory into
-;;; a tar file as sequenced files.  There are three exported procedures:
-;;; - rename-files &key :dir :type => renames the targeted files into a sequence
-;;; - tar-files &key :dir :type => saves the sequenced files into a tar file
-;;; - flsave &key :dir :type => executes both of the foregoing procedures
+;;; a tar file as sequenced files.  There is one exported procedures:
+;;; - flsave &key :dir :type :v => executes dedup, rename, tar, delete
+;;; functions in order.  The :v option will show output; otherwise
+;;; there is a single line output showing how many bytes were written.
 
 ;;; Code:
 
 (defpackage :svurl
   (:use :cl
-	:lolh.utils)
+   :lolh.utils)
   (:export
    :dedup-files
    :rename-files
