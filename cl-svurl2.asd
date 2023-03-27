@@ -1,5 +1,5 @@
 ;;; cl-svurl2.asd --- ASD File for CL-SVURL System
-;;; Time-stamp: <2023-03-26 18:51:00 minilolh>
+;;; Time-stamp: <2023-03-27 01:13:06 minilolh>
 
 ;;; Author: LOLH
 ;;; Created: 2023-03-24
@@ -21,12 +21,13 @@
   :description "SVURL implemented in Common Lisp."
   :version 0.0.2
   :author "wlharvey4"
-  :depends-on ("lolh-utils")
+  :depends-on ("lolh-utils" "quri")
   :components
   ((:module "src"
     :components
             ((:file "cl-svurl-package")
-             (:file "cl-flsave" :depends-on ("cl-svurl-package"))
-             (:file "cl-svurl" :depends-on ("cl-svurl-package"))))))
+             (:file "cl-svurl-defs" :depends-on ("cl-svurl-package"))
+             (:file "cl-flsave" :depends-on ("cl-svurl-defs" "cl-svurl-package"))
+             (:file "cl-svurl" :depends-on ("cl-svurl-defs" "cl-svurl-package"))))))
 
 ;;; cl-svurl.asd ends here
