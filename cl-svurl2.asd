@@ -1,5 +1,5 @@
 ;;; cl-svurl2.asd --- ASD File for CL-SVURL System
-;;; Time-stamp: <2023-03-26 13:21:00 minilolh>
+;;; Time-stamp: <2023-03-26 18:51:00 minilolh>
 
 ;;; Author: LOLH
 ;;; Created: 2023-03-24
@@ -25,6 +25,8 @@
   :components
   ((:module "src"
     :components
-            ((:file "cl-flsave")))))
+            ((:file "cl-svurl-package")
+             (:file "cl-flsave" :depends-on ("cl-svurl-package"))
+             (:file "cl-svurl" :depends-on ("cl-svurl-package"))))))
 
 ;;; cl-svurl.asd ends here

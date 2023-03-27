@@ -1,5 +1,5 @@
 ;;; cl-flsave.lisp
-;;; Time-stamp: <2023-03-26 11:13:36 wlh>
+;;; Time-stamp: <2023-03-26 22:59:16 minilolh>
 
 ;;; Commentary:
 ;;; The code here deals with saving certain files in a directory into
@@ -10,12 +10,7 @@
 
 ;;; Code:
 
-(defpackage :svurl
-  (:use :cl
-   :lolh.utils)
-  (:export
-   :flsave))
-(in-package :svurl)
+(in-package :cl-svurl)
 
 (defparameter *home* (uiop:getenv-absolute-directory "HOME"))
 (defparameter *downloads* (uiop:merge-pathnames*
@@ -28,6 +23,13 @@
                          (uiop:parse-unix-namestring "files.tar")
                          *documents*))
 (defparameter *tarfile-name* (uiop:unix-namestring *tarfile*))
+(defparameter *txt-files* '("saved" "used" "hosts"))
+(defparameter *txt-files-pathnames* (mapcar
+                                     (lambda (f)
+                                       (uiop:unix-namestring
+                                        (uiop:merge-pathnames*
+                                         (make-pathname :name f :type "txt")
+                                         *documents*))) *txt-files*))
 (defparameter *jpg* "*.jpg")
 
 (defun files-with-type (&key (dir *downloads*) (type *jpg*) (name nil) (name-only nil))
@@ -43,6 +45,17 @@ If :name-only is nil, return absolute namestrings; if t, return file-name only."
 		(t #'identity))))
     (mapcar func files)))
 
+(defun init-tar ()
+  "Create the initial tar file with the three index files stored at the beginning:
+- `saved'
+- `used'
+- `hosts'"
+  (eval `(uiop:run-program '("touch" ,@*txt-files-pathnames*)))
+  (eval `(uiop:run-program '("tar" "-cf" ,*tarfile-name*
+                             "--strip-components=4"
+                             ,@*txt-files-pathnames*)))
+  (eval `(uiop:run-program '("rm" ,@*txt-files-pathnames*))))
+
 (defun tar-list ()
   "Start an asynchronous tar process to list all of the files onto a stream."
   (eval
@@ -52,9 +65,10 @@ If :name-only is nil, return absolute namestrings; if t, return file-name only."
 (defun next-num ()
   "Determine the next number to use by finding the last file number
 in the tar file and adding 1.  If the tar file does not exist, create
-it and return 0."
+it and return 0.  Also add the `saved', `hosts' and `used' files at the
+beginning."
   (unless (uiop:file-exists-p *tarfile*)
-    (eval `(uiop:run-program '("touch" ,*tarfile-name*)))
+    (init-tar)
     (return-from next-num 0))
   (1+ (values
        (parse-integer
