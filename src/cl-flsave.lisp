@@ -1,5 +1,5 @@
 ;;; cl-flsave.lisp
-;;; Time-stamp: <2023-03-26 23:04:12 minilolh>
+;;; Time-stamp: <2023-03-27 23:34:55 minilolh>
 
 ;;; Commentary:
 ;;; The code here deals with saving certain files in a directory into
@@ -30,11 +30,12 @@ If :name-only is nil, return absolute namestrings; if t, return file-name only."
 - `saved'
 - `used'
 - `hosts'"
-  (eval `(uiop:run-program '("touch" ,@*txt-files-pathnames*)))
+  (eval `(uiop:run-program '("touch" ,@*txt-files-names*)))
   (eval `(uiop:run-program '("tar" "-cf" ,*tarfile-name*
-                             "--strip-components=4"
-                             ,@*txt-files-pathnames*)))
-  (eval `(uiop:run-program '("rm" ,@*txt-files-pathnames*))))
+                             "--strip-components=7"
+                             "-C ",(uiop:unix-namestring *u*)
+                             ,@*txt-files-names*)))
+  (eval `(uiop:run-program '("rm" ,@*txt-files-names*))))
 
 (defun tar-list ()
   "Start an asynchronous tar process to list all of the files onto a stream."

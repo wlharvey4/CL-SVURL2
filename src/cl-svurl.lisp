@@ -1,5 +1,5 @@
 ;;; cl-svurl.lisp --- SVURL in Common Lisp
-;;; Time-stamp: <2023-03-27 01:52:50 minilolh>
+;;; Time-stamp: <2023-03-27 23:48:10 minilolh>
 
 ;;; Author: WLHarvey4
 ;;; Created: 2023-03-26
@@ -16,9 +16,9 @@
 - `saved'
 - `used'
 - `hosts'"
-  (eval `(uiop:run-program '("tar" "-xf" ,*tarfile-name*
-                             "-C" ,(uiop:unix-namestring *documents*)))))
-
+  (eval `(uiop:run-program '("tar" "-vxf" ,*tarfile-name*
+                             "-C" ,(uiop:unix-namestring *u*)
+                             ,@*txt-files-names*))))
 (defun search-url (&key file url)
   "Search FILE for LINE.  Return the index into the file upon a successful match,
 or NIL upon failure.  FILE should be one of:
@@ -34,7 +34,7 @@ or NIL upon failure.  FILE should be one of:
 - `saved'
 - `used'
 ` `hosts'"
-  (let* ((path (uiop:merge-pathnames* (make-pathname :name file :type "txt") *documents*))
+  (let* ((path (uiop:merge-pathnames* (make-pathname :name file :type "txt") *u*))
          (uri (quri:uri url))
          (base-uri (quri:make-uri :scheme (quri:uri-scheme uri)
                                   :host (quri:uri-host uri)
